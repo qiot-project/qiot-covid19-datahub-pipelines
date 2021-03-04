@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: quarkus-compile
+spec:
+  params:
+  - name: build-type
+    type: string
+    description: "Selected build type: quarkus-jvm, quarkus-fast-jar, quarkus-native, spring-boot"
+  steps:
+  - name: build-sources
+    image: quay.io/gnewson/mandrel:latest
+    resources:
+      limits:
+        memory: 6Gi
+      requests:
+        memory: 3Gi
+    imagePullPolicy: IfNotPresent
+    script: |
+      MVN_ARGS="-DskipTests -Dmaven.wagon.http.ssl.insecure=true -s$(workspaces.maven-settings.path)/settings.xml -DappName=app"
+      case $(params.build-type) in
+        spring-boot)
+        ;;
+        quarkus-jvm)
+        ;;
+        quarkus-fast-jar)
+        MVN_ARGS="${MVN_ARGS} -Dquarkus.package.type=fast-jar"
+        ;;
+        quarkus-native)
+        MVN_ARGS="${MVN_ARGS} -Pnative"
+        ;;
+      esac
+      mvn ${MVN_ARGS} clean package
+    env:
+    - name: user.home
+      value: /tekton/home
+    workingDir: $(workspaces.source.path)
+  workspaces:
+    - description: The workspace consisting of maven project.
+      name: source
+    - description: >-
+        The workspace consisting of the custom maven settings provided by the
+        user.
+      name: maven-settings
