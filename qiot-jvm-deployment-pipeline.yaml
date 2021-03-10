@@ -15,13 +15,20 @@ spec:
       default: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-importer
     - name: SHORT_NAME
       description: The short name of the image
-      default: qiot-datahub-importer:latest
+        #default: qiot-datahub-importer:latest
+      default: qiot-datahub-importer
     - name: GITHUB_REPO_URL
       description: The GitHub Repo of the Application
       default: https://github.com/qiot-project/qiot-datahub-importer
     - name: GITHUB_REPO_REVISION
       description: The GitHub revision to use
       default: master
+    - name: APP_ENV_VARS
+      description: Environment variables for new-app command -e NAME=value
+      default: ''
+    - name: CREATE_ROUTE
+      description: Whether or not to create a route, yes or no
+      default: not
   workspaces:
     - name: source
     - name: maven-settings
@@ -84,3 +91,19 @@ spec:
           value:
             - 'new-app'
             - '$(params.SHORT_NAME)'
+            - '$(params.APP_ENV_VARS)'
+    - name: create-route
+      runAfter:
+        - deploy-app
+      when:
+        - input: '$(params.CREATE_ROUTE)'
+          operator: in
+          values: ["yes"]
+      taskRef:
+        name: openshift-client
+        kind: ClusterTask
+      params:
+        - name: ARGS
+          value:
+            - 'expose'
+            - 'svc/$(params.SHORT_NAME)'

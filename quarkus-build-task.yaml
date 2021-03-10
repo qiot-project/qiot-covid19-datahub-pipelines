@@ -13,8 +13,10 @@ spec:
     resources:
       limits:
         memory: 6Gi
+        cpu: 4
       requests:
-        memory: 3Gi
+        memory: 6Gi
+        cpu: 4
     imagePullPolicy: IfNotPresent
     script: |
       MVN_ARGS="-DskipTests -Dmaven.wagon.http.ssl.insecure=true -s$(workspaces.maven-settings.path)/settings.xml -DappName=app"
