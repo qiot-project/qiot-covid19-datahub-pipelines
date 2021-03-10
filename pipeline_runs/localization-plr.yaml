@@ -1,0 +1,30 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: qiot-localization-
+spec:
+  params:
+  - name: IMAGE_NAME
+    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-localization
+  - name: SHORT_NAME
+    value: qiot-datahub-localization
+  - name: GITHUB_REPO_URL
+    value: https://github.com/qiot-project/qiot-datahub-localization
+  - name: GITHUB_REPO_REVISION
+    value: main
+  - name: APP_ENV_VARS
+    value: ' '
+  - name: CREATE_ROUTE
+    value: not
+  pipelineRef:
+    name: quarkus-app-build
+  serviceAccountName: pipeline
+  timeout: 30m0s
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: second
+  - configMap:
+      name: maven-settings-xml
+    name: maven-settings
