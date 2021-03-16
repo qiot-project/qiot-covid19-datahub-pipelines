@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: qiot-gas-collector-
+  generateName: qiot-pollution-collector-
 spec:
   params:
   - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/gas-collector-service
+    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/pollution-collector-service
   - name: SHORT_NAME
-    value: gas-collector-service
+    value: pollution-collector-service
   - name: GITHUB_REPO_URL
     value: https://github.com/qiot-project/qiot-datahub-collector.git
   - name: GITHUB_REPO_REVISION
@@ -19,7 +19,7 @@ spec:
   - name: BUILD_TYPE
     value: quarkus-native
   - name: MULTI_MODULE_CONTEXT
-    value: qiot-datahub-collector-gas
+    value: qiot-datahub-collector-pollution
   pipelineRef:
     name: quarkus-app-build
   serviceAccountName: pipeline

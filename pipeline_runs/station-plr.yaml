@@ -2,19 +2,19 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: qiot-localization-
+  generateName: qiot-station-
 spec:
   params:
   - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-localization
+    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-station
   - name: SHORT_NAME
-    value: qiot-datahub-localization
+    value: qiot-datahub-station
   - name: GITHUB_REPO_URL
-    value: https://github.com/qiot-project/qiot-datahub-localization
+    value: https://github.com/qiot-project/qiot-datahub-station
   - name: GITHUB_REPO_REVISION
     value: main
   - name: APP_ENV_VARS
-    value: ' '
+    value: ' -e DBHOST=postgresql -e LOCALIZATION-SERVICE-URL=http://localization-service:8080'
   - name: CREATE_ROUTE
     value: 'no'
   pipelineRef:

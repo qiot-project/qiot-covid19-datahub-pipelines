@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: qiot-pollution-storer-
+spec:
+  params:
+  - name: IMAGE_NAME
+    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/pollution-storer-service
+  - name: SHORT_NAME
+    value: pollution-storer-service
+  - name: GITHUB_REPO_URL
+    value: https://github.com/qiot-project/qiot-datahub-storer.git
+  - name: GITHUB_REPO_REVISION
+    value: v2
+  - name: APP_ENV_VARS
+    value: ' -e KAFKABOOTSTRAPURL=stream-service-kafka-bootstrap:9092 -e INFLUXDB_CONNECTION_STRING=http://timeseries-service-influxdb2 -e INFLUXDB_ORG_ID=qiot -e INFLUXDB_DATA_BUCKET_ID=covid19 -e INFLUXDB_DATA_BUCKET_NAME=covid19 -e INFLUXDB_TOKEN=JCNTRpJj6AsvqiD7MnRWPZhIrXYpHwusT_Mwvc0I26E6lFJsXNzkaD2SbkIxeeH3TbiakNbbZGm_EKk8dlCCbQ=='
+  - name: CREATE_ROUTE
+    value: 'no'
+  - name: BUILD_TYPE
+    value: quarkus-fast-jar
+  - name: DOCKER_TYPE
+    value: fast-jar
+  - name: MULTI_MODULE_CONTEXT
+    value: qiot-datahub-storer-pollution
+  pipelineRef:
+    name: quarkus-app-build
+  serviceAccountName: pipeline
+  timeout: 30m0s
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: second
+  - configMap:
+      name: maven-settings-xml
+    name: maven-settings
