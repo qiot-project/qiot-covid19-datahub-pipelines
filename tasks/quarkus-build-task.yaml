@@ -7,9 +7,13 @@ spec:
   - name: build-type
     type: string
     description: "Selected build type: quarkus-jvm, quarkus-fast-jar, quarkus-native, spring-boot"
+  - name: multi-module
+    type: string
+    description: "If set then this is a multi-module build and extra build parameters are added"
+    default: none
   steps:
   - name: build-sources
-    image: quay.io/gnewson/mandrel:latest
+    image: maven-jdk-mandrel-builder:latest
     resources:
       limits:
         memory: 6Gi
@@ -32,6 +36,9 @@ spec:
         MVN_ARGS="${MVN_ARGS} -Pnative"
         ;;
       esac
+      if [ "$(params.multi-module)" != "none" ]; then
+        MVN_ARGS="${MVN_ARGS} -pl $(params.multi-module) -am"
+      fi
       mvn ${MVN_ARGS} clean package
     env:
     - name: user.home

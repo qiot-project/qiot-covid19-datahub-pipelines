@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: qiot-gas-collector-
+spec:
+  params:
+  - name: IMAGE_NAME
+    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/gas-collector-service
+  - name: SHORT_NAME
+    value: gas-collector-service
+  - name: GITHUB_REPO_URL
+    value: https://github.com/qiot-project/qiot-datahub-collector.git
+  - name: GITHUB_REPO_REVISION
+    value: main
+  - name: APP_ENV_VARS
+    value: ' -e MQTTHOST=endpoint-service-hdls-svc -e STATION-SERVICE-URL=http://station-service:8080 -e KAFKABOOTSTRAPURL=stream-service-kafka-bootstrap:9092'
+  - name: CREATE_ROUTE
+    value: not
+  - name: BUILD_TYPE
+    value: quarkus-native
+  - name: MULTI_MODULE_CONTEXT
+    value: qiot-datahub-collector-gas
+  pipelineRef:
+    name: quarkus-app-build
+  serviceAccountName: pipeline
+  timeout: 30m0s
+  workspaces:
+  - name: source
+    persistentVolumeClaim:
+      claimName: second
+  - configMap:
+      name: maven-settings-xml
+    name: maven-settings

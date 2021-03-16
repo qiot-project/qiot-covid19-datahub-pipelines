@@ -22,13 +22,22 @@ spec:
       default: https://github.com/qiot-project/qiot-datahub-importer
     - name: GITHUB_REPO_REVISION
       description: The GitHub revision to use
-      default: master
+      default: main
     - name: APP_ENV_VARS
       description: Environment variables for new-app command -e NAME=value
-      default: ''
+      default: ' '
     - name: CREATE_ROUTE
       description: Whether or not to create a route, yes or no
       default: not
+    - name: BUILD_TYPE
+      description: The type of Quarkus build - quarkus-jvm, quarkus-fast-jar, quarkus-native
+      default: quarkus-native
+    - name: DOCKER_TYPE
+      description: The type of docker file to use Dockerfile.[java|native]
+      default: native
+    - name: MULTI_MODULE_CONTEXT
+      description: The context directory used for multi-module builds
+      default: .
   workspaces:
     - name: source
     - name: maven-settings
@@ -49,7 +58,7 @@ spec:
       workspaces:
         - name: output
           workspace: source
-    - name: build-quarkus-app
+    - name: compile-quarkus-app
       taskRef:
         name: quarkus-compile
         kind: Task
@@ -57,26 +66,30 @@ spec:
         - clone-sources
       params:
         - name: build-type
-          value: quarkus-native
+          value: '$(params.BUILD_TYPE)'
+        - name: multi-module
+          value: '$(params.MULTI_MODULE_CONTEXT)'
       workspaces:
         - name: maven-settings
           workspace: maven-settings
         - name: source
           workspace: source
-    - name: build-java-app-image
+    - name: build-app-image
       taskRef:
         name: buildah
         kind: ClusterTask
       runAfter:
-        - build-quarkus-app
+        - compile-quarkus-app
       params:
         - name: IMAGE
           value: '$(params.IMAGE_NAME)'
         - name: DOCKERFILE
-          value: './src/main/docker/Dockerfile.native'
+          value: 'src/main/docker/Dockerfile.$(params.DOCKER_TYPE)'
         # since pushing to internal registry we skip TLS verify
         - name: TLSVERIFY
           value: 'false'
+        - name: CONTEXT
+          value: '$(params.MULTI_MODULE_CONTEXT)'
       workspaces:
         - name: source
           workspace: source
@@ -85,7 +98,7 @@ spec:
         name: openshift-client
         kind: ClusterTask
       runAfter:
-        - build-java-app-image
+        - build-app-image
       params:
         - name: ARGS
           value:
