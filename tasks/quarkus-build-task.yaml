@@ -36,7 +36,7 @@ spec:
         MVN_ARGS="${MVN_ARGS} -Pnative"
         ;;
       esac
-      if [ "$(params.multi-module)" != "none" ]; then
+      if [ "$(params.multi-module)" != "." ]; then
         MVN_ARGS="${MVN_ARGS} -pl $(params.multi-module) -am"
       fi
       mvn ${MVN_ARGS} clean package
