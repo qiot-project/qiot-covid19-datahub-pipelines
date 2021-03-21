@@ -9,14 +9,9 @@ spec:
   description: >-
     The Pipline to buld and deploy the Hello World Java App https://github.com/redhat-scholars/tekton-tutorial-greeter as Knative Service.
   params:
-    - name: IMAGE_NAME
-      description: >-
-        The fully qualified image name e.g example.com/tekton-tutorial/greeter
-      default: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-importer
-    - name: SHORT_NAME
-      description: The short name of the image
-        #default: qiot-datahub-importer:latest
-      default: qiot-datahub-importer
+    - name: SERVICE_NAME
+      description: The name of the service e.g. localisation-service
+      default: importer-service
     - name: GITHUB_REPO_URL
       description: The GitHub Repo of the Application
       default: https://github.com/qiot-project/qiot-datahub-importer
@@ -28,7 +23,7 @@ spec:
       default: ' '
     - name: CREATE_ROUTE
       description: Whether or not to create a route, yes or no
-      default: not
+      default: 'no'
     - name: BUILD_TYPE
       description: The type of Quarkus build - quarkus-jvm, quarkus-fast-jar, quarkus-native
       default: quarkus-native
@@ -82,7 +77,7 @@ spec:
         - compile-quarkus-app
       params:
         - name: IMAGE
-          value: '$(params.IMAGE_NAME)'
+          value: 'image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.SERVICE_NAME)'
         - name: DOCKERFILE
           value: 'src/main/docker/Dockerfile.$(params.DOCKER_TYPE)'
         # since pushing to internal registry we skip TLS verify
@@ -103,7 +98,7 @@ spec:
         - name: ARGS
           value:
             - 'new-app'
-            - '$(params.SHORT_NAME)'
+            - '$(params.SERVICE_NAME)'
             - '$(params.APP_ENV_VARS)'
     - name: create-route
       runAfter:
@@ -119,4 +114,4 @@ spec:
         - name: ARGS
           value:
             - 'expose'
-            - 'svc/$(params.SHORT_NAME)'
+            - 'svc/$(params.SERVICE_NAME)'

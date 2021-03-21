@@ -4,9 +4,7 @@ metadata:
   generateName: qiot-gas-collector-
 spec:
   params:
-  - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/gas-collector-service
-  - name: SHORT_NAME
+  - name: SERVICE_NAME
     value: gas-collector-service
   - name: GITHUB_REPO_URL
     value: https://github.com/qiot-project/qiot-datahub-collector.git
@@ -27,7 +25,7 @@ spec:
   workspaces:
   - name: source
     persistentVolumeClaim:
-      claimName: second
+      claimName: gas-collector-output
   - configMap:
       name: maven-settings-xml
     name: maven-settings

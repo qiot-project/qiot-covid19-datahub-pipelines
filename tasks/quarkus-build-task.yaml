@@ -13,13 +13,13 @@ spec:
     default: none
   steps:
   - name: build-sources
-    image: maven-jdk-mandrel-builder:latest
+    image: image-registry.openshift-image-registry.svc:5000/openshift/maven-jdk-mandrel-builder:latest
     resources:
       limits:
-        memory: 6Gi
+        memory: 8Gi
         cpu: 4
       requests:
-        memory: 6Gi
+        memory: 8Gi
         cpu: 4
     imagePullPolicy: IfNotPresent
     script: |

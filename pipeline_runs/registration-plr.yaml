@@ -5,10 +5,8 @@ metadata:
   generateName: qiot-registration-
 spec:
   params:
-  - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-registration
-  - name: SHORT_NAME
-    value: qiot-datahub-registration
+  - name: SERVICE_NAME
+    value: registration-service
   - name: GITHUB_REPO_URL
     value: https://github.com/qiot-project/qiot-datahub-registration
   - name: GITHUB_REPO_REVISION
@@ -24,7 +22,7 @@ spec:
   workspaces:
   - name: source
     persistentVolumeClaim:
-      claimName: second
+      claimName: registration-output
   - configMap:
       name: maven-settings-xml
     name: maven-settings

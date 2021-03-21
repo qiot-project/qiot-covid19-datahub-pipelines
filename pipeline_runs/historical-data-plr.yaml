@@ -4,9 +4,7 @@ metadata:
   generateName: qiot-historical-data-
 spec:
   params:
-  - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/historical-data-service
-  - name: SHORT_NAME
+  - name: SERVICE_NAME
     value: historical-data-service
   - name: GITHUB_REPO_URL
     value: https://github.com/qiot-project/qiot-datahub-importer.git
@@ -27,7 +25,7 @@ spec:
   workspaces:
   - name: source
     persistentVolumeClaim:
-      claimName: second
+      claimName: historical-data-output
   - configMap:
       name: maven-settings-xml
     name: maven-settings

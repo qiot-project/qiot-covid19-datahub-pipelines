@@ -5,10 +5,8 @@ metadata:
   generateName: qiot-localization-
 spec:
   params:
-  - name: IMAGE_NAME
-    value: image-registry.openshift-image-registry.svc:5000/geoff-testing/qiot-datahub-localization
-  - name: SHORT_NAME
-    value: qiot-datahub-localization
+  - name: SERVICE_NAME
+    value: localization-service
   - name: GITHUB_REPO_URL
     value: https://github.com/qiot-project/qiot-datahub-localization
   - name: GITHUB_REPO_REVISION
@@ -24,7 +22,7 @@ spec:
   workspaces:
   - name: source
     persistentVolumeClaim:
-      claimName: second
+      claimName: localization-output
   - configMap:
       name: maven-settings-xml
     name: maven-settings
