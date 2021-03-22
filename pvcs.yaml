@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: regisration-output
+  name: registration-output
   labels:
     pvc-use: qiot-pipeline
 spec:
