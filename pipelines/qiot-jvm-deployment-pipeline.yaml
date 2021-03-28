@@ -22,8 +22,11 @@ spec:
       description: Environment variables for new-app command -e NAME=value
       default: ' '
     - name: CREATE_ROUTE
-      description: Whether or not to create a route, yes or no
+      description: The type of route to create - no, secure, insecure
       default: 'no'
+    - name: SECURE_ROUTE_TYPE
+      description: The type of secure route to create - edge, passthrough, reencrypt
+      default: passthrough
     - name: BUILD_TYPE
       description: The type of Quarkus build - quarkus-jvm, quarkus-fast-jar, quarkus-native
       default: quarkus-native
@@ -100,13 +103,13 @@ spec:
             - 'new-app'
             - '$(params.SERVICE_NAME)'
             - '$(params.APP_ENV_VARS)'
-    - name: create-route
+    - name: create-insecure-route
       runAfter:
         - deploy-app
       when:
         - input: '$(params.CREATE_ROUTE)'
           operator: in
-          values: ["yes"]
+          values: ["insecure"]
       taskRef:
         name: openshift-client
         kind: ClusterTask
@@ -115,3 +118,20 @@ spec:
           value:
             - 'expose'
             - 'svc/$(params.SERVICE_NAME)'
+    - name: create-secure-route
+      runAfter:
+        - deploy-app
+      when:
+        - input: '$(params.CREATE_ROUTE)'
+          operator: in
+          values: ["secure"]
+      taskRef:
+        name: openshift-client
+        kind: ClusterTask
+      params:
+        - name: ARGS
+          value:
+            - 'create route'
+            - '$(params.SECURE_ROUTE_TYPE)'
+            - '$(params.SERVICE_NAME)'
+            - '--service=$(params.SERVICE_NAME)'

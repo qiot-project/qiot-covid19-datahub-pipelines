@@ -13,7 +13,7 @@ spec:
   - name: APP_ENV_VARS
     value: ' -e DBHOST=postgresql -e INFLUXDB_CONNECTION_STRING=http://timeseries-service-influxdb2 -e INFLUXDB_ORG_ID=qiot -e INFLUXDB_DATA_BUCKET_ID=covid19 -e INFLUXDB_DATA_BUCKET_NAME=covid19 -e INFLUXDB_TOKEN=JCNTRpJj6AsvqiD7MnRWPZhIrXYpHwusT_Mwvc0I26E6lFJsXNzkaD2SbkIxeeH3TbiakNbbZGm_EKk8dlCCbQ=='
   - name: CREATE_ROUTE
-    value: 'yes'
+    value: 'insecure'
   - name: BUILD_TYPE
     value: quarkus-fast-jar
   - name: DOCKER_TYPE

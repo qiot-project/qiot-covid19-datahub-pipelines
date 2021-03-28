@@ -14,7 +14,7 @@ spec:
   - name: APP_ENV_VARS
     value: ' -e STATION-SERVICE-URL=http://station-service:8080 -e CERT_MANAGER_ENABLED=false -e LOGLEVEL=FINE'
   - name: CREATE_ROUTE
-    value: 'yes'
+    value: 'secure'
   pipelineRef:
     name: quarkus-app-build
   serviceAccountName: pipeline
