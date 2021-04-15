@@ -12,7 +12,7 @@ spec:
   - name: GITHUB_REPO_REVISION
     value: v2
   - name: APP_ENV_VARS
-    value: ' -e STATION-SERVICE-URL=http://station-service:8080 -e CERT_MANAGER_ENABLED=false -e LOGLEVEL=FINE'
+    value: ' -e STATION-SERVICE-URL=http://station-service:8080'
   - name: CREATE_ROUTE
     value: 'secure'
   pipelineRef:
