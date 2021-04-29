@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: qiot-pollution-collector-
+  name: qiot-pollution-collector
 spec:
   params:
   - name: SERVICE_NAME
