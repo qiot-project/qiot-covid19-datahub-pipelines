@@ -1,0 +1,7 @@
+# Default values for qiot-pipelines
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+maven:
+  url: http://nexus3-geoff-testing.apps.cluster-fcd8.fcd8.example.opentlc.com/repository/maven-public/
+

@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: qiot-registration-
+  name: qiot-registration
 spec:
   params:
   - name: SERVICE_NAME

@@ -25,10 +25,26 @@ deployed as part of the Covid19 app.
 - Set up InfluxDB
 
 
-## How to deploy 
+## How to deploy manually
 - Set up Nexus.  See separate section.
 
 - Build the Mandrel image locally and push it to the OpenShift project if it
   doesn't exist already.
 
 - The PVCs are labeled so that they can all be deleted together if desired.
+
+
+## How to create and install the helm chart
+
+Just call the script "build-chart.sh". It will create a folder target, copies everything in there
+and build the chart via helm package. 
+
+You can then install the chart using
+
+```
+$> helm install qiot-covid19-datahub-pipelines target/qiot-covid19-datahub-pipelines-0.1.2.tgz
+```
+
+Note, that your current user must have privileges to install Operators!
+
+

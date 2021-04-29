@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: qiot-historical-data-
+  name: qiot-historical-data
 spec:
   params:
   - name: SERVICE_NAME

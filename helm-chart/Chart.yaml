@@ -1,0 +1,12 @@
+apiVersion: v2
+name: qiot-covid19-datahub-pipelines
+description: This Helm Chart is going to install the pipelines of the qiot project into a new instance of OpenShift
+home: https://github.com/qiot-project
+type: application
+version: 0.1.2
+appVersion: "1.0.0"
+maintainers:
+    - name: Wanja Pernath
+      email: wpernath@redhat.com
+
+
