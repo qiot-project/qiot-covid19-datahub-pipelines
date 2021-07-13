@@ -3,5 +3,5 @@
 # Declare variables to be passed into your templates.
 
 maven:
-  url: http://nexus3-geoff-testing.apps.cluster-fcd8.fcd8.example.opentlc.com/repository/maven-public/
+  url: http://nexus:8081/repository/maven-public/
 

@@ -13,8 +13,8 @@
 # On mac you could use brew install helm
 #
 
-SOURCE=$(basename "$0")
-BASEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+SOURCE=$(realpath -s $0)
+BASEDIR=$(dirname $SOURCE)
 
 TARGET_BASE=$BASEDIR/target
 TARGET=$TARGET_BASE/chart
